@@ -1,0 +1,22 @@
+
+When you build them, using
+docker build -t <hub-user>/<repo-name>[:<tag>]
+docker build -t webapplication .
+docker build -t xyzname/webapplication:v1.2.8
+
+By re-tagging an existing local image
+docker tag <existing-image> <hub-user>/<repo-name>[:<tag>]
+docker tag webapplication xyzname/webapplication:v1.2.8
+
+run container using this image
+docker run -d --name webapplication -p 80:80 -t xyzname/webapplication:v1.2.8
+ 
+docker run -d --name webapplication -p 80:80 webapplication
+
+to commit changes
+docker commit <existing-container> <hub-user>/<repo-name>[:<tag>]
+docker commit webapplication xyzname/webapplication:v1.2.8
+
+push this repository to the registry designated by its name or tag.
+docker push <hub-user>/<repo-name>:<tag>
+docker push xyzname/webapplication:v1.2.8

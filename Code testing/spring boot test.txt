@@ -1,0 +1,223 @@
+Spring Boot Test commonly used Annotation
+------------------------------------------
+@Mock
+@InjectMocks
+@BeforeEach
+@AfterEach
+@BeforeAll
+@AfterAll
+@Test
+
+@WebMvcTest
+@DataJpaTest
+
+@RunWith(MockitoJUnitRunner.class)
+
+@SpringBootTest
+@ExtendWith(MockitoExtension.class)
+
+@MockBean
+@AutoConfigureTestDatabase
+
+@TestConfiguration
+
+@Import(TestEmployeeServiceConfig.class)
+
+@ConfigurationProperties(prefix = "app")
+@ConfigurationPropertiesScan
+@ActiveProfiles({"test","dev"})
+@DynamicPropertySource
+@Value("${custom.name}")
+@DirtiesContext
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@LocalServerPort
+@Sql(scripts = { "/init-database.sql", "/populate-data.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Disabled("Temporarily disabled until bug XYZ is fixed")
+@RepeatedTest(5)
+
+
+static imports:
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+
+Testing Frameworks
+-------------------
+There are several testing tools commonly used in Spring Boot applications, including:
+1.JUnit: A widely-used testing framework for Java.
+2.Mockito: A mocking framework for creating mock objects in tests.
+3.Testcontainers: Provides lightweight, throwaway instances of common databases or services for testing.
+4.Spring Boot Test: Offers annotations and utilities for testing Spring Boot applications.
+5.RestAssured: A Java DSL for simplifying the testing of REST services.
+6.Selenium: Used for web application testing, especially end-to-end testing.
+7.Jacoco: A code coverage analysis tool that helps you identify areas of your codebase that need more testing.
+8.WireMock: A tool for mocking HTTP services, useful for testing external service interactions.
+
+Types of Testing
+----------------
+Spring Boot applications can be tested at various levels, including:
+
+1.Unit Testing: Testing individual components, such as classes or methods, in isolation.
+2.Integration Testing: Verifying that different components or services work correctly together
+3.Functional Testing: Testing the application’s functionality from the user’s perspective
+4.End-to-End Testing: Testing the entire application, including its external dependencies, in a production-like environment
+
+Best Practices for Testing Spring Boot Applications
+---------------------------------------------------
+1]. Keep Tests Isolated
+2]. Leverage Spring Boot’s Testing Annotations
+
+a. Use @SpringBootTest to load the entire Spring context.
+
+b. Use MockMvc to simulate HTTP requests and test the response from your controller. Use @AutoConfigureMockMvc to automatically configure MockMvc.
+
+c. Use @MockBean to replace a real bean with a mock implementation.
+
+@Mock vs @MockBean
+------------------
+@Mock is used for unit testing and mocking objects outside of the Spring context, while @MockBean is used for Spring Boot integration testing to replace real beans with mock or spy versions within the Spring application context.
+
+d. Use @DataJpaTest to test repositories with an embedded database
+
+e. Use @AutoConfigureTestDatabase to configure the test database.
+
+f. Use @BeforeEach and @AfterEach to set up and tear down test fixtures.
+
+3].3. Test Configuration
+
+a. Use @TestConfiguration to provide additional beans for testing.
+
+i. Create a static inner class in the same test class where we want to autowire the bean
+
+ii. Create a separate test configuration class and import it using the @Import annotation
+
+
+b. Use @ConfigurationProperties to inject properties from a configuration file.
+
+c. Use @ActiveProfiles to activate a specific profile for testing when you have multiple profiles.
+
+d. Use @DynamicPropertySource to set dynamic configuration properties for tests.
+
+e. Use @DirtiesContext to reset the Spring context after a test.
+
+f. Use RestTemplate to make HTTP requests.
+
+g. Use @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT) to start the server on a random port. Use TestRestTemplate to make HTTP requests and assert responses.
+
+h. Use @Sql to execute SQL scripts before and after a test.
+
+i. Use @Disabled to disable a test temporarily.
+
+j. Use @RepeatedTest to repeat a test a specified number of times.
+
+
+Interview Questions
+===================
+
+Basic Concepts and Annotations
+------------------------------
+
+1.What is Spring Boot, and how does it differ from the traditional Spring Framework?
+  Focus on Spring Boot's auto-configuration, embedded servers, and opinionated defaults
+  
+2.What are the key differences between @Mock and @MockBean in Spring Boot tests?
+  @Mock is a Mockito annotation, while @MockBean is a Spring Boot-specific annotation for replacing beans in the application context with mocks.
+
+3.Explain the use of @SpringBootTest annotation. What are some of its features?
+  It is used for integration testing, providing a full application context. It can specify properties, web environment, and more.
+  
+4.How do you use @WebMvcTest, and when is it appropriate to use it?
+  For testing only the web layer components, such as controllers, without starting the full application context.
+
+5.What is the purpose of @DataJpaTest?
+  Used to test JPA repositories, providing an in-memory database and configuring only the JPA-related components.
+
+
+Testing Tools and Libraries
+----------------------------
+
+6.How do you configure and use an embedded database for testing in Spring Boot?
+  Discuss H2, HSQLDB, or Derby and how Spring Boot auto-configures them for testing purposes.
+
+7.Can you explain the use of MockMvc? How do you test a REST API using MockMvc?
+  MockMvc is used for testing MVC controllers by simulating HTTP requests and validating responses
+  
+8.What is TestRestTemplate, and when would you use it?
+  A convenient class for testing RESTful services. It's simpler than RestTemplate and pre-configured for integration tests.
+
+9.How do you handle database state management during integration tests?
+  Discuss the use of annotations like @Transactional, @Sql, @DirtiesContext, and rollback strategies.
+
+10.Explain the concept of a test slice in Spring Boot. How does it help in testing?
+   Test slices are used to load a subset of the application context for testing specific parts of the application, like @WebMvcTest, @DataJpaTest, etc.
+
+Advanced Topics
+---------------
+
+11.How can you test asynchronous methods in Spring Boot?
+   Discuss using @Async, Future, and testing with mocks or the CompletableFuture API
+   
+12.How do you test security configurations in Spring Boot? 
+   Talk about using @WithMockUser, @WithUserDetails, or custom SecurityContext setup
+
+13.What is SpringExtension and how does it integrate with JUnit 5?
+   Explain the use of @ExtendWith(SpringExtension.class) and how it provides support for Spring-specific features in JUnit 5.
+
+14.How do you perform property-based testing in Spring Boot?
+   Discuss configuring properties specific to tests using @TestPropertySource or overriding default properties.
+
+15.How do you test caching mechanisms in Spring Boot?
+   Mention the use of @Cacheable, @CacheEvict, and tools for testing cache behavior.
+
+16.What strategies do you use for testing microservices with Spring Boot?
+   Discuss strategies like using WireMock for mocking external services, using Spring Cloud Contract for contract testing, or using test containers for integration tests.
+
+17.How do you test scheduled tasks in Spring Boot?
+   Explain the use of @Scheduled, controlling task execution in tests, and verifying task execution.
+
+18.How do you handle test data setup and teardown in Spring Boot tests?
+   Discuss using SQL scripts with @Sql, data loaders, or tools like DBUnit.
+
+19.What is the role of @TestConfiguration in Spring Boot tests?
+   Explain how it can define additional beans or configurations for specific test scenarios.
+
+20.Can you describe a challenging testing scenario you encountered in a Spring Boot application and how you resolved it?
+   This question is more open-ended and allows you to share your experience and problem-solving skills.
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
